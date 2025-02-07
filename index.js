@@ -1,7 +1,8 @@
 import express from "express";
-import homeRouter from "./routes/home.js";
-import productsRouter from "./routes/products.js";
-import connectDB from "./utils/db.js";
+import homeRouter from "./src/routes/home.js";
+import productsRouter from "./src/routes/products.js";
+import connectDB from "./src/utils/db.js";
+import authRouter from './src/routes/auth.js'
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json())
 
 app.use(homeRouter);
 
+app.use("/auth", authRouter);
 app.use("/products", productsRouter);
 
 app.listen(PORT, () => {
