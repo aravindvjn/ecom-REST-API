@@ -38,11 +38,13 @@ export const verifyEmail = async (req, res) => {
 
     user.save();
 
+    await VerificationPendingUser.findByIdAndDelete(pendingVerification._id);
+    
     //Send verification email here
     await res
       .status(200)
       .json({ success: true, message: "User signed up successfully" });
-      
+
   } catch (error) {
     console.error("Error in sigining up User : ", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -127,7 +129,23 @@ export const signin = async (req, res) => {
       return res.status(400).json({ error: "Incorrect password." });
     }
 
-    res.json({ message: "User signed in successfully" });
+    //setting the session
+    req.session.user = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    };
+
+    res.json({ 
+      success: true,
+      message: "User signed in successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+
   } catch (error) {
     console.error("Error in signing in User : ", error);
     res.status(500).json({ error: "Internal Server Error" });

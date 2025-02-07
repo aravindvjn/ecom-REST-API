@@ -5,8 +5,23 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, enum: ["admin", "user"], default: "user" },
-  cart: { type: Array, default: [] },
-  orders: { type: Array, default: [] },
+
+  cart: [
+    {
+      product: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
+      quantity: { type: Number, required: true },
+    },
+  ],
+
+  orders: [
+    {
+      product: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
+      quantity: { type: Number, required: true },
+      totalPrice: { type: Number, required: true },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
+
   createdAt: { type: Date, default: Date.now },
 });
 
