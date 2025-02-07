@@ -1,13 +1,22 @@
-import express from 'express';
-import { signin, signup, verifyEmail } from '../controllers/auth.js'
+import express from "express";
+import {
+  getPasswordResetMail,
+  resetPassword,
+  signin,
+  signup,
+  verifyEmail,
+} from "../controllers/auth.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/signup",signup)
+router.post("/signup", signup);
 
-router.post("/verify/:token",verifyEmail)
+router.post("/verify/:token", verifyEmail);
 
-router.post("/signin",signin)
+router.post("/signin", signin);
 
+router.post("/reset-password", getPasswordResetMail);
+
+router.post("/reset-password/:token", resetPassword);
 
 export default router;
