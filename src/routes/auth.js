@@ -9,6 +9,8 @@ import {
 
 const router = express.Router();
 
+// PATH : /auth/*
+
 router.post("/signup", signup);
 
 router.post("/verify/:token", verifyEmail);

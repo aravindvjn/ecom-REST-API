@@ -6,9 +6,11 @@ import {
   getProductById,
   getProducts,
 } from "../controllers/products.js";
-import { adminVerification } from "../middlewares/admin.js";
+import { adminVerification } from "../middlewares/admin-athentication.js";
 
 const router = express.Router();
+
+// PATH : /products/*
 
 router.get("/", getProducts);
 

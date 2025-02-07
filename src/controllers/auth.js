@@ -6,6 +6,7 @@ import User from "../model/users.js";
 import { validateUser } from "../validation/user-validation.js";
 import crypto from "crypto";
 import { validatePassword } from "../validation/validate-password.js";
+import jwt from "jsonwebtoken";
 
 //verify email
 export const verifyEmail = async (req, res) => {
@@ -134,12 +135,14 @@ export const signin = async (req, res) => {
         .json({ success: false, error: "Incorrect password." });
     }
 
-    //setting the session
-    req.session.user = {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    };
+    //setting token
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     res.json({
       success: true,
@@ -148,8 +151,10 @@ export const signin = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        token,
       },
     });
+
   } catch (error) {
     console.error("Error in signing in User : ", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -181,6 +186,7 @@ export const getPasswordResetMail = async (req, res) => {
       success: true,
       message: "Reset password email sent successfully",
     });
+    
   } catch (error) {
     console.error("Error in sending password reset mail : ", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });

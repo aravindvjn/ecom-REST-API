@@ -4,7 +4,7 @@ import User from "../model/users.js";
 //Get the cart
 export const getOrders = async (req, res) => {
   try {
-    const userId = req.session.user.id;
+    const userId = req.user.id;
 
     const user = await User.findById(userId).populate({
       path: "orders._id",
@@ -21,6 +21,7 @@ export const getOrders = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
 
 //order the product
 export const placeOrders = async (req, res) => {
@@ -61,7 +62,7 @@ export const placeOrders = async (req, res) => {
     });
     
     const user = await User.findByIdAndUpdate(
-      req.session.user.id,
+      req.user.id,
       {
         $push: {
           orders: {
@@ -90,3 +91,4 @@ export const placeOrders = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+

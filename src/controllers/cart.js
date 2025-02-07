@@ -4,7 +4,7 @@ import User from "../model/users.js";
 //Get the cart
 export const getCart = async (req, res) => {
   try {
-    const userId = req.session.user.id;
+    const userId = req.user.id;
 
     const user = await User.findById(userId).populate({
       path: "cart._id",
@@ -26,7 +26,7 @@ export const getCart = async (req, res) => {
 export const removeFromCart = async (req, res) => {
   try {
     const { productId } = req.params;
-    const userId = req.session.user.id;
+    const userId = req.user.id;
 
     const user = await User.findByIdAndUpdate(
       userId,
@@ -48,7 +48,6 @@ export const removeFromCart = async (req, res) => {
 };
 
 //add or Update the cart
-
 export const updateCart = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -71,7 +70,7 @@ export const updateCart = async (req, res) => {
         .json({ success: false, message: "Product not found" });
     }
 
-    const userId = req.session.user.id;
+    const userId = req.user.id;
 
     const results = await User.findOne(
       { _id: userId, "cart._id": productId },
