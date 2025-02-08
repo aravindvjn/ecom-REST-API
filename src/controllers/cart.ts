@@ -1,14 +1,16 @@
+import { Request, Response } from "express";
 import Product from "../model/products.js";
 import User from "../model/users.js";
 
 //Get the cart
-export const getCart = async (req, res) => {
+export const getCart = async (req: Request, res: Response): Promise<any> => {
   try {
-    const userId = req.user.id;
+
+    const userId = req.user!.id;
 
     const user = await User.findById(userId).populate({
       path: "cart._id",
-      model:'products'
+      model: 'products'
     });
 
     if (!user) {
@@ -23,10 +25,11 @@ export const getCart = async (req, res) => {
 };
 
 //Delete a product from the cart
-export const removeFromCart = async (req, res) => {
+export const removeFromCart = async (req: Request, res: Response): Promise<any> => {
   try {
+
     const { productId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user!.id;
 
     const user = await User.findByIdAndUpdate(
       userId,
@@ -48,7 +51,7 @@ export const removeFromCart = async (req, res) => {
 };
 
 //add or Update the cart
-export const updateCart = async (req, res) => {
+export const updateCart = async (req: Request, res: Response) : Promise<any>=> {
   try {
     const { productId } = req.params;
 
@@ -70,7 +73,7 @@ export const updateCart = async (req, res) => {
         .json({ success: false, message: "Product not found" });
     }
 
-    const userId = req.user.id;
+    const userId = req.user!.id;
 
     const results = await User.findOne(
       { _id: userId, "cart._id": productId },

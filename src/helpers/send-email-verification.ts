@@ -1,7 +1,7 @@
 import { domain } from "./constants.js"
 import { sendEmail } from "./email.js"
 
-export const sendEmailVerification = async(email,token)=>{
+export const sendEmailVerification = async(email:string,token:string)=>{
 
     const subject = "Email Verification"
     const message = `

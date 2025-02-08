@@ -1,9 +1,10 @@
+import { Request, Response } from "express";
 import Product from "../model/products.js";
 
 //Get All Products
-export const getProducts = async (req, res, next) => {
+export const getProducts = async (req:Request, res:Response) => {
   try {
-    const page = req.query.page;
+    const page = Number(req.query.page) || 1;
 
     const limit = 10;
 
@@ -19,7 +20,7 @@ export const getProducts = async (req, res, next) => {
 };
 
 //Get Products by Id
-export const getProductById = async (req, res, next) => {
+export const getProductById = async (req:Request, res:Response): Promise<any> => {
   try {
     const { id } = req.params;
 
@@ -37,7 +38,7 @@ export const getProductById = async (req, res, next) => {
 };
 
 //create a new Product
-export const createProduct = async (req, res, next) => {
+export const createProduct = async (req:Request, res:Response): Promise<any> => {
   try {
     const { title, description, price } = req.body;
 
@@ -54,7 +55,7 @@ export const createProduct = async (req, res, next) => {
 };
 
 //Edit a Product
-export const editProduct = async (req, res, next) => {
+export const editProduct = async (req:Request, res:Response): Promise<any> => {
   try {
     const { id } = req.params;
     const { title, description, price } = req.body;
@@ -77,7 +78,7 @@ export const editProduct = async (req, res, next) => {
 };
 
 //Delete a Product
-export const deleteProduct = async (req, res) => {
+export const deleteProduct = async (req:Request, res:Response): Promise<any> => {
   try {
     const { id } = req.params;
 

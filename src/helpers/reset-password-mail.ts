@@ -1,7 +1,7 @@
 import { domain } from "./constants.js"
 import { sendEmail } from "./email.js"
 
-export const sendPasswordResetMail = async(email,token)=>{
+export const sendPasswordResetMail = async(email:string,token:string)=>{
 
     const subject = "Reset Password"
     const message = `

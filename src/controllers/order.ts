@@ -1,10 +1,11 @@
+import { Request, Response } from 'express'
 import Product from "../model/products.js";
 import User from "../model/users.js";
 
 //Get the cart
-export const getOrders = async (req, res) => {
+export const getOrders = async (req: Request, res: Response): Promise<any> => {
   try {
-    const userId = req.user.id;
+    const userId = req.user!.id;
 
     const user = await User.findById(userId).populate({
       path: "orders._id",
@@ -24,7 +25,7 @@ export const getOrders = async (req, res) => {
 
 
 //order the product
-export const placeOrders = async (req, res) => {
+export const placeOrders = async (req: Request, res: Response): Promise<any> => {
   try {
     let { products } = req.body; //products = [ {productId,quantity} ];
 
@@ -41,7 +42,7 @@ export const placeOrders = async (req, res) => {
     }));
 
     const availableProducts = await Product.find({
-      _id: { $in: products.map((p) => p.productId) },
+      _id: { $in: products.map((p:any) => p.productId) },
     });
 
     if (availableProducts.length !== products.length) {
@@ -56,17 +57,17 @@ export const placeOrders = async (req, res) => {
         price: product.price,
         quantity:
           products.find(
-            (p) => p.productId.toString() === product._id.toString()
+            (p:any) => p.productId.toString() === product._id.toString()
           )?.quantity || 1,
       };
     });
-    
+
     const user = await User.findByIdAndUpdate(
-      req.user.id,
+      req.user!.id,
       {
         $push: {
           orders: {
-            $each: products.map((product) => ({
+            $each: products.map((product:any) => ({
               _id: product._id,
               quantity: product.quantity,
               totalPrice: product.price * product.quantity,

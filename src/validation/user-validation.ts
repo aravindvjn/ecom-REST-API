@@ -1,7 +1,21 @@
-export const validateUser = (user) => {
+export type UserInputType = {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export type ErrorType = {
+  email?: string;
+  password?: string;
+  name?: string;
+}
+export const validateUser = (user: UserInputType): {
+  success: boolean;
+  errors: ErrorType;
+} => {
   const { email, password, name } = user;
 
-  let errors = null;
+  let errors: ErrorType = {};
 
   if (!email) {
     errors = { ...errors, email: "Email is required" };
@@ -12,7 +26,7 @@ export const validateUser = (user) => {
   if (!name) {
     errors = { ...errors, name: "Name is required" };
   }
-  if (errors) {
+  if (Object.keys(errors).length) {
     return {
       success: false,
       errors,
@@ -28,7 +42,7 @@ export const validateUser = (user) => {
       password: "Password should be between 8 and 20 characters long",
     };
   }
-  if (errors) {
+  if (Object.keys(errors).length) {
     return {
       success: false,
       errors,

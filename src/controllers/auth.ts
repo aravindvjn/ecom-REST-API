@@ -7,9 +7,10 @@ import { validateUser } from "../validation/user-validation.js";
 import crypto from "crypto";
 import { validatePassword } from "../validation/validate-password.js";
 import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
 
 //verify email
-export const verifyEmail = async (req, res) => {
+export const verifyEmail = async (req:Request, res:Response): Promise<any>  => {
   try {
     const { token } = req.params;
 
@@ -54,7 +55,7 @@ export const verifyEmail = async (req, res) => {
 };
 
 //Signup
-export const signup = async (req, res) => {
+export const signup = async (req:Request, res:Response) : Promise<any>  => {
   try {
     const { name, email, password } = req.body;
 
@@ -115,7 +116,7 @@ export const signup = async (req, res) => {
 };
 
 //Signin
-export const signin = async (req, res) => {
+export const signin = async (req:Request, res:Response) : Promise<any>  => {
   try {
     const { email, password } = req.body;
 
@@ -138,7 +139,7 @@ export const signin = async (req, res) => {
     //setting token
     const token = jwt.sign(
       { id: user._id, email: user.email },
-      process.env.SECRET,
+      process.env.SECRET!,
       {
         expiresIn: "1h",
       }
@@ -162,7 +163,7 @@ export const signin = async (req, res) => {
 };
 
 //get reset password mail
-export const getPasswordResetMail = async (req, res) => {
+export const getPasswordResetMail = async (req:Request, res:Response) : Promise<any>  => {
   try {
     const { email } = req.body;
 
@@ -194,7 +195,7 @@ export const getPasswordResetMail = async (req, res) => {
 };
 
 //reset password
-export const resetPassword = async (req, res) => {
+export const resetPassword = async (req:Request, res:Response) : Promise<any>  => {
   try {
     const { token } = req.params;
     const { password } = req.body;
